@@ -84,17 +84,17 @@ while ($line4 = <VC>) {
 				$oa = (split /,/,(split /:/,$F[9])[1])[1] ; # profondeur ALT 
 				print STDERR $F[1] . "\t" . $oa . "\n";
 			}
-			else{die "cannot read properly the info field of sample " . $ENV{fileout} . ", will die now\n" }
+			else{die "cannot read properly the info field of sample " . $fileout . ", will die now\n" }
 		
 			$F[6] = "";
-			if($dp < $ENV{mincov}){ $F[6] .= "Low_depth;" } 
-			if( $F[5] <= $ENV{qual}){ $F[6] .= "Bad_mapping;" }
-			if(($oa / $dp) <= $ENV{af} ){ $F[6] .= "Heteroplastic;" }
+			if($dp < $mincov){ $F[6] .= "Low_depth;" } 
+			if( $F[5] <= $qual){ $F[6] .= "Bad_mapping;" }
+			if(($oa / $dp) <= $af ){ $F[6] .= "Heteroplastic;" }
 		
 			if( $F[6] ne ""){
 			$SNP{$F[1]} = [@F];
 			}else{
-		#if($last_pass && ($F[1] - $last_pass) < $ENV{sliding} ){$F[6] .= "SnpCluster;"; ${$SNP{$last_pass}}[6] .= "SnpCluster;" }
+		#if($last_pass && ($F[1] - $last_pass) < $sliding ){$F[6] .= "SnpCluster;"; ${$SNP{$last_pass}}[6] .= "SnpCluster;" }
 		$SNP{$F[1]} = [@F];
 		$last_pass = $F[1];
 		}
@@ -119,7 +119,6 @@ foreach $position (sort { $a <=> $b } keys %SNP){
 print STDERR "[INFO] " . $count_deleted . " out of " . $count_normal . " SNPs were annotated as low quality\n\n" ;
 
 close OUT;
-
 
 
 
