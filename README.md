@@ -17,6 +17,19 @@ You are likely to have to make some modifications to it in order to modify paths
 - 07.filtrated_WGS_all_sites.fasta Multifasta aligned file 
 - 07.filtrated_WGS_only_variant.fasta Multifasta aligned file 
 
+## Dependencies
+picard.jar MarkDuplicates (> v.2.22)
+bwa mem 
+samtools (> v.1.7 )
+Perl core
+Perl List::Util module (usually included in Perl core)
+Perl File::Copy module (usually included in Perl core)
+
+XML::LibXML
+Getopt::Long
+
+freebayes
+
 
 This Readme file will be edited and completed more thoroughly in the days to come.
 
