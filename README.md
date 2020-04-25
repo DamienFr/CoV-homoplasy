@@ -13,6 +13,10 @@ You are likely to have to make some modifications to it in order to modify paths
 - A fasta reference genome to be put in a folder named 00.ref
 - Fastq files containing raw sequencing reads to be put in a folder named 01.sra_fastq
 
+## Outputs (not provided)
+- 07.filtrated_WGS_all_sites.fasta Multifasta aligned file 
+- 07.filtrated_WGS_only_variant.fasta Multifasta aligned file 
+
 
 This Readme file will be edited and completed more thoroughly in the days to come.
 
