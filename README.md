@@ -1,6 +1,6 @@
 # SARS-CoV-2 SNP Calling pipeline
 
-This repository contains scripts and command line used for the publication "to be added".
+This repository contains scripts and command line used for the publication "Emergence of genomic diversity and recurrent mutations in SARS-CoV-2" https://doi.org/10.1016/j.meegid.2020.104351
 
 It takes as input the raw sequencing reads (fastq) of 348 SARS-CoV-2 isolates and outputs a set of SNP and nucleotides alignements.
 
