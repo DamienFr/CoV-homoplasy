@@ -10,19 +10,19 @@ use Cwd qw(cwd);
 
 =head1 USAGE
 
-	perl annotated_vcf2WGS.pl --vcf XXX.vcf --output_fasta_all_sites all_sites --output_fasta_only_variant only_variant --fasta_reference ref.fasta --SNP_positions_to_exclude low_depth.txt --SNP_positions_to_extract variable_positions.txt --outgroup strain01 --max_N 2 --SNP_stats_folder snp_statistics
+	perl annotated_vcf2WGS.pl --vcf XXX.vcf --output_fasta_all_sites all_sites --output_fasta_only_variant only_variant --fasta_reference ref.fasta --SNP_positions_to_exclude low_depth.txt --SNP_positions_to_extract variable_positions.txt --outgroup strain01 --max_N 2 --SNP_stats_folder snp_metrics
 
 =head1 OPTIONS
 
-	--vcf=s" => \$files,
-	--output_fasta_all_sites	Output for complete fasta sequence (eg. the length of the reference genome). (REQUIRED)
+	--vcf=s" => Folder containing vcf files to process (all .vcf files will be processed) (REQUIRED)
+	--output_fasta_all_sites	Output for complete fasta sequence (eg. the length of the reference genome) (REQUIRED)
 	--output_fasta_only_variant	Output for "variant-only" fasta sequence (eg. the length of the nb of SNPs in SNP_positions_to_extract file). (REQUIRED)
 	--fasta_reference	Reference genome on whoch reads have been mapped to produce the VCFs. Multifasta files will make the script die (REQUIRED)
 	--SNP_positions_to_exclude	File containing the list of positions to exclude. Usefull to specify low depth positions and/or positions not covered and/or recombinant positions. These positions will be turned to "N" if and only if they are part of the variable positions.
 	--SNP_positions_to_extract	File containing the list of variable SNP positions. Only those will be considered.  Usefull to not take into account sites detecetd as recombinant by ClonalFrameML for ex. (REQUIRED)
 	--outgroup	Outgroup. That's it. It's the outgroup. Not more not less. (OPTIONAL)
 	--max_N	Maximum number of N per nucleotide position across all individuals. N in the sequence of the outgroup DO NOT count. Positions with more N will be deleted for the "only variant" fasta file and converted to "N" for all individuals for the "all sites" fasta file. Surviving variable positions will be outputed. 
-	--SNP_stats_folder	folder ...
+	--SNP_stats_folder	Folder to which multiple files providing SNP number metrics will be written. Created if non-existant (REQUIRED)
 	-h or --help:	This Documentation
 
 =head1 AUTHOR
