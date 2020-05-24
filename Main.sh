@@ -54,56 +54,12 @@ done
 
 rm -f 05.1.low_depth_positions
 
-
 mkdir 02.results_bwa_selected
 # proper copy of the interesting files in 02.results_bwa_selected
 perl -F'\t' -ane 'BEGIN{use File::Copy qw(copy);}; if($F[-1] > 99){
 $old_file = "./02.results_bwa/" . $F[0] . "rmdup.bam";
 $new_file = "./02.results_bwa_selected/" . $F[0] . "rmdup.bam";
 copy  $old_file, $new_file}else{ $count_deleted++ };END{print STDERR $count_deleted . " deleted strains\n"}' 023.depth.all_indivs
-
-# it's possible to keep only the mapped reads of each bam file to save space if needed
-# for files in ./02.results_bwa_selected/*; do
-# fileout=$(echo $files | perl -F'\/' -ane 'print $F[-1]')
-# samtools view -b -F 4 $files > ./02.results_bwa_selected_mapped/${fileout} ; done
-
-
-###########################################################################################################
-####################  Retrieving the biosample metadata for the selected SRA projects ###################
-###########################################################################################################
-
-# i restrict the SRA metadata table to the kept projects :
-perl -F'\t' -ane 'if($. ==1 ){ print }elsif( -f "./02.results_bwa_selected/" . $F[0] . ".rmdup.bam"){print}' 00.sra_results.tab > 00.sra_and_biosample_results_selected_indivs.tab
-
-# Extract metadata from biosample # production of a list of the biosample metadata to retrieve & delete  the header line
-cut -f20 -d$'\t' 00.sra_and_biosample_results_selected_indivs.tab | sed '1d' > 00.biosamples
-
-# method to retrieve large numbers of biosample metadata even though NCBI is not happy about such large querries.
-mkdir 00.temp_biosamples
-split -l 100 00.biosamples ./00.temp_biosamples/00.biosamples_
-
-for block in `ls ./00.temp_biosamples/00.biosamples_*`; 
-  do 
-  tr "\n" "," < $block | sed 's/,$//' | sed 's/^/\nefetch -db biosample -mode xml -id /'; 
-done > 00.get_biosamples_info.sh
-
-bash 00.get_biosamples_info.sh > 00.biosample.xml
-perl -ne 's/</\n</g; print' 00.biosample.xml > 00.biosample-reformat.xml
-rm -rf 00.temp_biosamples ; rm -f 00.biosample.xml
-
-perl 00.biosample_xml_to_tab.pl > 00.biosample_results.tab
-
-# Addition of the biosample information to the SRA metadata table
-perl -F'\t' -ane 'BEGIN{open (GB, "<", "00.biosample_results.tab");while ($line = <GB>) {
-$line =~ s/\r?\n//;
-@fields = split /\t/,$line;
-$h{$fields[1]} = $fields[2] . "\t" . $fields[3] . "\t" . $fields[4] }
-close GB};
-s/\r?\n//;
-$F[-1] =~ s/\r?\n//;
-if($. == 1){print $_ . "\tcollection_date\tgeo_loc_name\tisolation_source\n"}
-else{
-print $_ . "\t" . $h{$F[19]} . "\n" } ' 00.sra_results.tab > 00.sra_and_biosample_results.tab
 
 ###########################################################################################################
 ######################################  SNP Calling and filtering  ########################################
@@ -129,19 +85,14 @@ rm -f 05.2.variable_positions
 ###################  Creation of aligned fasta SNP Calling and filtering  #################################
 ###########################################################################################################
 
-for files in ./04.1.filtrated_vcf/*.vcf
-do
-perl ./scripts/annotated_vcf2WGS_perl.pl --vcf ${files} \
---output_folder_fasta_all_sites 07.filtrated_WGS_all_sites \
---output_folder_fasta_only_variant 07.filtrated_WGS_only_variant \
+perl ./scripts/annotated_vcf2WGS_perl.pl --vcf 04.1.filtrated_vcf \
+--output_fasta_all_sites 07.filtrated_WGS_all_sites.fasta \
+--output_fasta_only_variant 07.filtrated_WGS_only_variant.fasta \
 --fasta_reference ./01.ref/refseq_sars.fasta \
---low_depth_positions ./07.SNP_filtering_temp_files/05.1.low_depth_positions_uniq \
---SNP_positions_to_extract ./07.SNP_filtering_temp_files/05.2.variable_positions_uniq
-done
-
-# i will create the two multifasta with N on positions
-cat ./07.filtrated_WGS_all_sites/* > 07.filtrated_WGS_all_sites.fasta
-cat ./07.filtrated_WGS_only_variant/* > 07.filtrated_WGS_only_variant.fasta
+--SNP_positions_to_exclude ./07.SNP_filtering_temp_files/05.1.low_depth_positions_uniq \
+--SNP_positions_to_extract ./07.SNP_filtering_temp_files/05.2.variable_positions_uniq \
+--SNP_stats_folder 08.SNP_filtering_stats \
+--max_N 100
 
 
 
