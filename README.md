@@ -4,7 +4,7 @@
 
 # This Readme file will be edited and completed more thoroughly in the days to come.
 
-This repository contains scripts and command lines used to produce a phylogeny and detect homoplasic SNPs in SARS-CoV-2. It has been used in the publication  
+This repository contains scripts and command lines used to produce a phylogeny and detect homoplasic SNPs in SARS-CoV-2. They were used in the publication  
 
 **Emergence of genomic diversity and recurrent mutations in SARS-CoV-2**  
 L. van Dorp, M. Acman*, D. Richard*, L. P. Shaw*, C. E. Ford, L. Ormond, C. J. Owen, J. Pangae, C. C. S. Tan, F. A.T. Boshiere, A. Torres Ortiz, F. Balloux  
