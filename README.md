@@ -2,8 +2,6 @@
 
 ![schematics](https://github.com/DamienFr/CoV-homoplasy/blob/master/git_hub_figure.png)
 
-# This Readme file will be edited and completed more thoroughly in the days to come.
-
 This repository contains scripts and command lines used to produce a phylogeny and detect homoplasic SNPs in SARS-CoV-2. They were used in the publication  
 
 **Emergence of genomic diversity and recurrent mutations in SARS-CoV-2**  
@@ -36,7 +34,4 @@ Perl File::Copy module (usually included in Perl core)
 XML::LibXML perl module  
 Getopt::Long perl module  
 freebayes   
-
-
-This Readme file will be edited and completed more thoroughly in the days to come.
 
